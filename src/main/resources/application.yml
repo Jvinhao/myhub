@@ -7,9 +7,13 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
 
+
 github:
   client:
     id: Iv1.2d15475aa762bf73
     secret: 8977e98dd4de1cd94b1e24f9e51d75aee3162660
   redirect:
     uri: http://localhost:8080/callback
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

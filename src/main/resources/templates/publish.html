@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>码农社区</title>
+    <title>发布 - 大学生社区</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="css/community.css"/>
@@ -50,25 +50,40 @@
         </div>
     </div>
 </nav>
-
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
-            <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <hr>
-            <div class="media" th:each=" question:${ questions}">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2854956166,1658664264&fm=26&gp=0.jpg">
-                    </a>
+            <form action="/publish" method="post">
+                <div class="form-group">
+                    <label for="title">问题标题(简单概要)</label>
+                    <input type="text" class="form-control" id="title" placeholder="问题标题..." name="title"
+                           th:value="${title}">
                 </div>
-                <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}">一起来学习spring boot吧</h4>
-                    <span th:text="${question.description}">你可以与我一起交流</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span class="text-desc">[[${question.commentCount}]] 个回复 · [[${question.viewCount}]] 次浏览 · <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span> 时发布</span>
+                <div class="form-group">
+                    <label for="description">问题补充(必填)：</label>
+                    <textarea cols="30" rows="10" class="form-control" id="description" placeholder="Email"
+                              name="description" th:text="${description}"></textarea>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="tag">添加标签</label>
+                    <input type="text" class="form-control" id="tag" placeholder="输入标签，以，号隔开" name="tag"
+                           th:value="${tag}">
+                </div>
+                <div class="container-fluid main">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-12 col-sm-12">
+                            <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12" role="alert" th:text="${error}"
+                                 th:if="${error != null}"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-12 col-sm-12">
+                            <button type="submit" class="btn btn-success" style="float: right">发布</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
 
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
@@ -79,7 +94,6 @@
         </div>
     </div>
 </div>
-
 
 <script rel="script" type="application/javascript" src="webjars/jquery/3.0.0/jquery.min.js"></script>
 <script rel="script" type="application/javascript" src="js/bootstrap.min.js"></script>
