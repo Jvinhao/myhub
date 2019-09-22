@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <title>发布 - 大学生社区</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="css/community.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
 
 </head>
 <body>
@@ -16,6 +16,7 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <hr>
             <form action="/publish" method="post">
+                <input hidden="hidden" name="id" type="text" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题(简单概要)</label>
                     <input type="text" class="form-control" id="title" placeholder="问题标题..." name="title"
@@ -55,8 +56,8 @@
     </div>
 </div>
 
-<script rel="script" type="application/javascript" src="webjars/jquery/3.0.0/jquery.min.js"></script>
-<script rel="script" type="application/javascript" src="js/bootstrap.min.js"></script>
+<script rel="script" type="application/javascript" src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script rel="script" type="application/javascript" src="/js/bootstrap.min.js"></script>
 
 </body>
 </html>

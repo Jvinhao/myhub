@@ -1,26 +1,27 @@
 package org.lf.community.community.controller;
 
-import org.lf.community.community.mapper.QuestionMapper;
+import org.lf.community.community.dto.QuestionDTO;
 import org.lf.community.community.mapper.UserMapper;
 import org.lf.community.community.model.Question;
 import org.lf.community.community.model.User;
+import org.lf.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PublishController {
 
-    @Autowired
-    QuestionMapper questionMapper;
+
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    QuestionService questionService;
 
     @RequestMapping("/publish")
     public String publish() {
@@ -31,6 +32,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
+                            @RequestParam(value = "id",required = false) Integer id,
                             HttpServletRequest request,
                             Model model) {
         model.addAttribute("title",title);
@@ -60,10 +62,20 @@ public class PublishController {
         question.setCreator(user.getAccountId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
+        question.setId(id);
 
-        questionMapper.create(question);
-
+        questionService.createOrUpdate(question);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable("id") Integer id,Model model) {
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("title",question.getTitle());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute("id",question.getId());
+        return "publish";
     }
 }
