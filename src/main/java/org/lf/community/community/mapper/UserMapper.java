@@ -20,4 +20,7 @@ public interface UserMapper {
 
     @Select("select * from user where account_id = #{accountId}")
     User findByAccountId(@Param("accountId") String accountId);
+
+    @Insert("update user set name = #{name}, token = #{token}, gmt_modified = #{gmtModified}, bio = #{bio}, avatar_url = #{avatarUrl} where id = #{id}")
+    void update(User user);
 }

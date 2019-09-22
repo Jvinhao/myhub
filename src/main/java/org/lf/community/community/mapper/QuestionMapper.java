@@ -25,4 +25,7 @@ public interface QuestionMapper {
 
     @Select("select * from question  where creator = #{accountId} limit #{offset}, #{size} ")
     List<Question> findAllByAccount(@Value("accountId") String accountId, Integer offset, Integer size);
+
+    @Select("select * from question where id = #{id}")
+    Question getById(@Value("id") Integer id);
 }

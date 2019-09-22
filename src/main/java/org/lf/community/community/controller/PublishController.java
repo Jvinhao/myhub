@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Controller
 public class PublishController {
@@ -50,19 +48,7 @@ public class PublishController {
             model.addAttribute("error","标签不能为空");
             return "/publish";
         }
-
-        Cookie[] cookies = request.getCookies();
-        User user = null;
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("token")) {
-                Optional<User> userOptional = userMapper.findByToken(cookie.getValue());
-                if(userOptional.isPresent()) {
-                    user = userOptional.get();
-                    request.getSession().setAttribute("user",user);
-                }
-                break;
-            }
-        }
+        User user = (User) request.getSession().getAttribute("user");
         if(user == null) {
             model.addAttribute("error","用户未登录");
             return "/publish";

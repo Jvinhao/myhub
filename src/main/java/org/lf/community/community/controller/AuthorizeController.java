@@ -5,6 +5,7 @@ import org.lf.community.community.dto.GithubUser;
 import org.lf.community.community.mapper.UserMapper;
 import org.lf.community.community.model.User;
 import org.lf.community.community.provider.GithubProvider;
+import org.lf.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class AuthorizeController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     GithubProvider githubProvider;
@@ -56,14 +60,24 @@ public class AuthorizeController {
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
             user.setBio(githubUser.getBio());
-            userMapper.insert(user);   //代替session的存储
+            userService.createOrUpdate(user);
+            //userMapper.insert(user);   //代替session的存储
             //设置cookie
             response.addCookie(new Cookie("token", user.getToken()));
 
-            request.getSession().setAttribute("user", githubUser);
+            //request.getSession().setAttribute("user", githubUser);
             return "redirect:/";
         } else {
             return "redirect:/";
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        return "redirect:/";
     }
 }
