@@ -4,16 +4,16 @@ import lombok.Data;
 import org.lf.community.model.User;
 
 @Data
-public class QuestionDTO {
+public class CommentDTO {
     private Long id;
-    private String title;
-    private String description;
-    private String tag;
+    private Long parentId;
+    private Integer type;
+    private String content;
+    private Long commentator;
     private long gmtCreate;
     private long gmtModified;
-    private Long creator;
-    private Integer viewCount;
-    private Integer commentCount;
     private Integer likeCount;
+    private Integer commentCount;
     private User user;
+
 }

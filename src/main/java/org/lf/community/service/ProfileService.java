@@ -25,7 +25,7 @@ public class ProfileService {
     UserMapper userMapper;
 
 
-    public PaginationDTO listByUser(Integer id, Integer page, Integer size) {
+    public PaginationDTO listByUser(Long id, Integer page, Integer size) {
         Integer offset = size * (page - 1);
         PaginationDTO paginationDTO = new PaginationDTO();
         QuestionExample questionExample = new QuestionExample();

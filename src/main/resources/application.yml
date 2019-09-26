@@ -19,3 +19,4 @@ mybatis:
     map-underscore-to-camel-case: true
   type-aliases-package: org.lf.community.mapper
   mapper-locations: classpath:/mapper/*.xml
+

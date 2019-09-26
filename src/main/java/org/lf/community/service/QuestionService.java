@@ -3,6 +3,9 @@ package org.lf.community.service;
 import org.apache.ibatis.session.RowBounds;
 import org.lf.community.dto.PaginationDTO;
 import org.lf.community.dto.QuestionDTO;
+import org.lf.community.exception.CustomizeCode;
+import org.lf.community.exception.CustomizeException;
+import org.lf.community.mapper.QuestionExtMapper;
 import org.lf.community.mapper.QuestionMapper;
 import org.lf.community.mapper.UserMapper;
 import org.lf.community.model.Question;
@@ -23,6 +26,9 @@ public class QuestionService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -54,8 +60,11 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question == null) {
+            throw new CustomizeException(CustomizeCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -77,5 +86,12 @@ public class QuestionService {
             questionExample.createCriteria().andIdEqualTo(question.getId());
             questionMapper.updateByExampleSelective(updateQuestion, questionExample);
         }
+    }
+
+    public void incView(Long id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

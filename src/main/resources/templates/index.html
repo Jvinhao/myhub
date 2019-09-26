@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>码农社区</title>
+    <title>大学生社区</title>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="css/community.css"/>
@@ -72,6 +72,16 @@
     </div>
 </div>
 
+
+<script type="application/javascript">
+    window.onload = function (ev) {
+       var disable =  window.localStorage.getItem("closable");
+       if(disable === "true") {
+           window.close();
+           window.localStorage.removeItem("closable");
+       }
+    }
+</script>
 
 <script rel="script" type="application/javascript" src="webjars/jquery/3.0.0/jquery.min.js"></script>
 <script rel="script" type="application/javascript" src="js/bootstrap.min.js"></script>

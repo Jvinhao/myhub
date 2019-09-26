@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${selecionName}">个人中心</title>
+    <title>大学生社区</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
@@ -24,7 +24,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}">一起来学习spring boot吧</h4>
+                    <h4 class="media-heading">
+                        <a href="#" th:href="@{'/question/' + ${question.id}}" th:text="${question.title}"></a>
+                    </h4>
                     <span th:text="${question.description}">你可以与我一起交流</span>
                     &nbsp;&nbsp;&nbsp;
                     <span class="text-desc">[[${question.commentCount}]] 个回复 · [[${question.viewCount}]] 次浏览 · <span

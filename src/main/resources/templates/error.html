@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>码农社区</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+
+</head>
+<body>
+<div th:replace="navigation :: nav"></div>
+    <div class="jumbotron" style="margin-left: 50px">
+        <h1>出错啦！！！</h1>
+        <p th:text="${message}">服务异常，请稍后再试试</p>
+        <p><a class="btn btn-primary btn-lg" href="/" role="button">点击跳转到首页</a></p>
+    </div>
+
+<script rel="script" type="application/javascript" src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+<script rel="script" type="application/javascript" src="/js/bootstrap.min.js"></script>
+
+</body>
+</html>
