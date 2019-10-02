@@ -15,35 +15,37 @@ public class CommunityApplicationTests {
 
     @Test
     public void test() {
-        int[] arr = {1,4,2,5,26,7,2,5};
-        System.out.println(fun(arr,arr.length,1));
+        int arr[] = {16,15,1,30,45,23,9};
+        quickSort(arr,0,arr.length - 1);
     }
 
-    public int fun(int[] arr, int n, int upordown) {
-        int max = 0,min = 0;
-        if(upordown == 1) {
-            for (int i = 0; i < n; i++) {
-                if(max <= arr[i]) {
-                    max = arr[i];
-                }
-            }
-            int temp = arr[0];
-            arr[0] = max;
-            max = temp;
-            return arr[0];
-        }else if(upordown == 0) {
-            for (int i = 0; i < n; i++) {
-                if(min >= arr[i]) {
-                    min = arr[i];
-                }
-            }
-            int temp = arr[0];
-            arr[0] = min;
-            min = temp;
-            return arr[0];
-        }else {
-            return 0;
+    public static void quickSort(int[] arr, int start, int end) {
+        if(start >= end) {
+            return;
         }
-    }
+        int i = start;
+        int j = end;
+        int key = arr[start];
 
+        while(i < j) {
+            while(i < j && arr[j] > key) {
+                j--;  //反向寻找
+            }
+            arr[i] = arr[j];
+            while(i < j && arr[i] < key) {
+                i++; //正想寻找
+            }
+            arr[j] = arr[i];
+        }
+        arr[i] = key;
+
+        for (int n : arr) {
+            System.out.print(n + " ");
+        }
+        System.out.println();
+
+        quickSort(arr,start, i-1);
+        quickSort(arr, i + 1, end);
+
+    }
 }

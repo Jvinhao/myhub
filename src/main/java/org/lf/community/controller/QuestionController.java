@@ -29,8 +29,11 @@ public class QuestionController {
 
         List<CommentDTO> commentDTO = commentService.list(id, CommentTypeEnum.QUESTION);
 
+        List<QuestionDTO> tagList = questionService.listTagsQuestion(questionDTO);
+
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",commentDTO);
+        model.addAttribute("tagList",tagList);
         return "question";
     }
 

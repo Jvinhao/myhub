@@ -31,12 +31,17 @@
                     <li>
                         <a th:if="${session.user != null}" href="/publish">提问</a>
                     </li>
+                    <li>
+                        <a href="/profile/replies">通知
+                            <span class="badge">4</span>
+                        </a>
+                    </li>
                     <li th:if="${session.user == null}"><a
                             href="https://github.com/login/oauth/authorize?client_id=Iv1.2d15475aa762bf73&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
                     </li>
                     <li class="dropdown" th:if="${session.user != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false" ><span th:text="${session.user.name}"></span>
+                           aria-expanded="false"><span th:text="${session.user.name}"></span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">

@@ -90,3 +90,31 @@ body {
     top: -2px;
     right: 8px
 }
+
+.question-tag {
+    margin-right: 10px;
+    width: 18px;
+}
+
+.question-related {
+    list-style: none;
+    line-height: 30px;
+    font-size: 16px;
+    margin-left: 0;
+    padding-left: 0;
+
+}
+
+.publish-tag {
+    margin-top: 10px;
+    display: none;
+    padding-top: 10px;
+}
+
+.publish-tag .label-info {
+    /*margin-right: 10px;*/
+    white-space: normal;
+    margin: 4px 4px;
+    /*display: inline-block;*/
+
+}

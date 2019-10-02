@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label for="title">问题标题(简单概要)</label>
                     <input type="text" class="form-control" id="title" placeholder="问题标题..." name="title"
-                           th:value="${title}">
+                           autocomplete="off" th:value="${title}">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充(必填)：</label>
@@ -29,8 +29,29 @@
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签</label>
-                    <input type="text" class="form-control" id="tag" placeholder="输入标签，以，号隔开" name="tag"
-                           th:value="${tag}">
+                    <input type="text" class="form-control" id="tag" placeholder="输入标签，以,号隔开" name="tag"
+                           autocomplete="off" th:value="${tag}" onclick="selectTab()">
+                    <div class="publish-tag" id="tag-tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" th:each="selectCategory,selectCategoryStat:${tags}" th:class="${selectCategoryStat.first ? 'active':''}">
+                                <a th:href="${'#' + selectCategory.categoryName}" aria-controls="home" role="tab"
+                                   data-toggle="tab" th:text="${selectCategory.categoryName}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane" th:id="${selectCategory.categoryName}"
+                                 th:each="selectCategory,selectCategoryStat:${tags}"
+                                 th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
+                                <span class="label label-info question-tag" onclick="selectTags(this)"
+                                      th:each="selectTag : ${selectCategory.tags}" th:data-tag="${selectTag}">
+                                    <span class="glyphicon glyphicon-tags" style="top: 1px"
+                                          th:text="${' ' +selectTag}">
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="container-fluid main">
                     <div class="row">
@@ -58,6 +79,6 @@
 
 <script rel="script" type="application/javascript" src="/webjars/jquery/3.0.0/jquery.min.js"></script>
 <script rel="script" type="application/javascript" src="/js/bootstrap.min.js"></script>
-
+<script rel="script" type="application/javascript" src="/js/community.js"></script>
 </body>
 </html>
