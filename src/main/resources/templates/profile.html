@@ -14,67 +14,92 @@
 <div class="container-fluid main profile">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
-            <h2><span th:text="${selectionName}"></span></h2>
+            <h4 style="margin-top: 20px;"><span th:text="${selectionName}"></span></h4>
             <hr>
-            <div class="media" th:each=" question:${pagination.questions}">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object img-rounded" th:src="${question.user.avatarUrl}"
-                             src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2854956166,1658664264&fm=26&gp=0.jpg">
-                    </a>
+            <div class="col-lg-12 col-md-12 col-sm-12" th:if="${section == 'questions'}">
+                <div class="media" th:each=" question:${pagination.data}">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${question.user.avatarUrl}"
+                                 src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2854956166,1658664264&fm=26&gp=0.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="#" th:href="@{'/question/' + ${question.id}}" th:text="${question.title}"></a>
+                        </h4>
+                        <span th:text="${question.description}">你可以与我一起交流</span>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="text-desc">[[${question.commentCount}]] 个回复 · [[${question.viewCount}]] 次浏览 · <span
+                                th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span> 时发布</span>
+                    </div>
                 </div>
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        <a href="#" th:href="@{'/question/' + ${question.id}}" th:text="${question.title}"></a>
-                    </h4>
-                    <span th:text="${question.description}">你可以与我一起交流</span>
-                    &nbsp;&nbsp;&nbsp;
-                    <span class="text-desc">[[${question.commentCount}]] 个回复 · [[${question.viewCount}]] 次浏览 · <span
-                            th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd')}"></span> 时发布</span>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" th:if="${section == 'replies'}">
+                <div class="media" th:each=" notification:${pagination.data}">
+                    <div class="media-body">
+                        <p class="media-heading">
+                            <span th:text="${notification.notifierName + ' ' + notification.typeName}"></span>
+                            <a th:href="@{'/notification/' + ${notification.id}}"
+                               th:text="${notification.outerTitle}"></a>
+                            <span class="label label-danger" th:if="${notification.status == 0}">未读</span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li th:if="${pagination.showFirstPage == true}">
-                        <a href="#" aria-label="Previous" th:href="@{'/profile/' + ${section}(page = 1)}">
-                            <span aria-hidden="true">&lt;&lt;</span>
-                        </a>
-                    </li>
-                    <li th:if="${pagination.showPrevious == true}">
-                        <a href="#" aria-label="Previous" th:href="@{'/profile/' + ${section}(page=${pagination.page - 1})}">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li th:each="page : ${pagination.pages}" th:class="${pagination.page == page}? 'active':''"><a
-                            href="#" th:text="${page}" th:href="@{'/profile/' + ${section}(page=${page})}">1</a></li>
 
-                    <li th:if="${pagination.showNext == true}">
-                        <a href="#" aria-label="Next" th:href="@{'/profile/' + ${section}(page=${pagination.page + 1})}">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                    <li th:if="${pagination.showEndPage == true}">
-                        <a href="#" aria-label="Next" th:href=" @{'/profile/' + ${section}(page = ${pagination.totalPage})}">
-                            <span aria-hidden="true">&gt;&gt;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <nav aria-label=" Page navigation">
+                    <ul class="pagination">
+                        <li th:if="${pagination.showFirstPage == true}">
+                            <a href="#" aria-label="Previous" th:href="@{'/profile/' + ${section}(page = 1)}">
+                                <span aria-hidden="true">&lt;&lt;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.showPrevious == true}">
+                            <a href="#" aria-label="Previous"
+                               th:href="@{'/profile/' + ${section}(page=${pagination.page - 1})}">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        <li th:each="page : ${pagination.pages}"
+                            th:class="${pagination.page == page}? 'active':''"><a
+                                href="#" th:text="${page}"
+                                th:href="@{'/profile/' + ${section}(page=${page})}">1</a>
+                        </li>
 
+                        <li th:if="${pagination.showNext == true}">
+                            <a href="#" aria-label="Next"
+                               th:href="@{'/profile/' + ${section}(page=${pagination.page + 1})}">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li th:if="${pagination.showEndPage == true}">
+                            <a href="#" aria-label="Next"
+                               th:href=" @{'/profile/' + ${section}(page = ${pagination.totalPage})}">
+                                <span aria-hidden="true">&gt;&gt;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 section">
             <div class="list-group">
-                <a href="/profile/questions" class="list-group-item" th:classappend="${section == 'questions'}? 'active':''">我的问题<span class="badge">14</span></a>
-                <a href="/profile/replies" class="list-group-item" th:classappend="${section == 'replies'}? 'active':''">最新回复</a>
+                <a href="/profile/questions" class="list-group-item"
+                   th:classappend="${section == 'questions'}? 'active':''">我的问题<span class="badge">14</span></a>
+                <a href="/profile/replies" class="list-group-item"
+                   th:classappend="${section == 'replies'}? 'active':''">最新回复
+                    <span class="badge" th:text="${unreadCount}"></span>
+                </a>
             </div>
         </div>
+
     </div>
 </div>
-
-
-<script rel="script" type="application/javascript" src="/webjars/jquery/3.0.0/jquery.min.js"></script>
-<script rel="script" type="application/javascript" src="/js/bootstrap.min.js"></script>
+    <script rel="script" type="application/javascript" src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script rel="script" type="application/javascript" src="/js/bootstrap.min.js"></script>
 
 </body>
 </html>

@@ -2,6 +2,8 @@ package org.lf.community.service;
 
 import org.lf.community.dto.CommentDTO;
 import org.lf.community.enums.CommentTypeEnum;
+import org.lf.community.enums.NotificationEnum;
+import org.lf.community.enums.NotificationStatusEnum;
 import org.lf.community.exception.CustomizeCode;
 import org.lf.community.exception.CustomizeException;
 import org.lf.community.mapper.*;
@@ -35,38 +37,60 @@ public class CommentService {
     @Autowired
     private CommentExtMapper commentExtMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @Transactional
-    public void insert(Comment comment) {
-        if(comment.getParentId() == null || comment.getParentId() == 0) {
+    public void insert(Comment comment, User commentator) {
+        if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeCode.TARGET_PARAM_NOT_FOUND);
         }
-        if(comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
-            throw  new CustomizeException(CustomizeCode.TYPE_PARAM_ERROR);
+        if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
+            throw new CustomizeException(CustomizeCode.TYPE_PARAM_ERROR);
         }
-        if(comment.getType() == CommentTypeEnum.COMMENT.getType()) {
+        if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             //回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
-            if(dbComment == null) {
+            if (dbComment == null) {
                 throw new CustomizeException(CustomizeCode.COMMENT_NOT_FOUND);
+            }
+
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeCode.TARGET_PARAM_NOT_FOUND);
             }
             commentMapper.insert(comment);
             Comment upComment = new Comment();
             upComment.setId(comment.getParentId());
             upComment.setCommentCount(1);
             commentExtMapper.incCommentCount(upComment);
-        }else {
+            createNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationEnum.REPLY_COMMENT,question.getId());
+        } else {
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
-            if(question == null) {
+            if (question == null) {
                 throw new CustomizeException(CustomizeCode.TARGET_PARAM_NOT_FOUND);
             }
             commentMapper.insert(comment);
             question.setCommentCount(1);
             questionExtMapper.incComment(question);
-
+            createNotify(comment, question.getCreator(), commentator.getName(), question.getTitle(), NotificationEnum.REPLY_QUESTION,question.getId());
         }
     }
 
-    public List<CommentDTO> list(Long id,CommentTypeEnum typeEnum) {
+    private void createNotify(Comment comment, Long receiver, String notifyName, String title, NotificationEnum replyComment,Long outerId) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(replyComment.getType());
+        notification.setOuterid(outerId);
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notification.setOuterTitle(title);
+        notification.setNotifierName(notifyName);
+        notificationMapper.insert(notification);
+    }
+
+    public List<CommentDTO> list(Long id, CommentTypeEnum typeEnum) {
         CommentExample example = new CommentExample();
         example.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(typeEnum.getType());
         example.setOrderByClause("gmt_create desc");
@@ -79,7 +103,7 @@ public class CommentService {
             commentDTO.setContent(comment.getContent());
             commentDTO.setType(comment.getType());
         }*/
-        if(comments.size() == 0) {
+        if (comments.size() == 0) {
             return new ArrayList<>();
         }
         Set<Long> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());

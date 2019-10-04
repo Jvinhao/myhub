@@ -29,8 +29,8 @@ public class CommentController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeCode.NO_LOGIN);
         }
-        if(commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
-            return  ResultDTO.errorOf(CustomizeCode.CONTENT_IS_EMPTY);
+        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) {
+            return ResultDTO.errorOf(CustomizeCode.CONTENT_IS_EMPTY);
         }
         Comment comment = new Comment();
         comment.setParentId(commentCreateDTO.getParentId());
@@ -41,11 +41,11 @@ public class CommentController {
         comment.setGmtModified(comment.getGmtCreate());
         comment.setLikeCount(0);
         comment.setCommentCount(0);
-        commentService.insert(comment);
+        commentService.insert(comment, user);
         return ResultDTO.okOf();
     }
 
-    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResultDTO<List<CommentDTO>> comments(@PathVariable("id") Long id) {
         List<CommentDTO> list = commentService.list(id, CommentTypeEnum.COMMENT);

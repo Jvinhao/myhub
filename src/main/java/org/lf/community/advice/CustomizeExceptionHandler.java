@@ -20,7 +20,7 @@ public class CustomizeExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ModelAndView handle(HttpServletRequest request, Throwable e, Model model, HttpServletResponse response) {
-       /* HttpStatus status = getStatus(request);*/
+       /* HttpStatus status = getType(request);*/
         if("application/json".equals(request.getContentType())) {
             ResultDTO resultDTO = null;
             if(e instanceof CustomizeException) {
@@ -52,7 +52,7 @@ public class CustomizeExceptionHandler {
         return new ModelAndView("error");
     }
 
-    /*public HttpStatus getStatus(HttpServletRequest request) {
+    /*public HttpStatus getType(HttpServletRequest request) {
         Integer status = (int)request.getAttribute("javax.servlet.error.status_code");
         if(status == null) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
